@@ -5,7 +5,7 @@
 #define H_COLS		103
 #define VISIBLE_COLS	100
 #define V_LINES		150
-#define VGA_BUFF_SIZE	(H_PIXELS * V_LINES / 2)
+#define VGA_BUFF_SIZE	(H_COLS * V_LINES)
 
 
 extern char vga_buff[V_LINES][H_COLS];
