@@ -56,7 +56,7 @@ void box(Window *win, uint8_t color, uint8_t thickness){
 
 	//left border
 	
-	for(uint16_t j = 0; j < thickness; j++){
+	for(uint16_t j = 0; j/2 < thickness; j++){
 		for(uint16_t i = win->width * thickness; i < thresh; i += win->width){
 		       if(j & 1){
 			       win->win_buff[i + j/2] = (win->win_buff[i + j/2] & 0x0f) | (color << 4);
@@ -68,7 +68,7 @@ void box(Window *win, uint8_t color, uint8_t thickness){
 	}
 
 	//right border
-	for(uint16_t j = win->width - thickness; j < win->width; j++){
+	for(uint16_t j = (win->width)*2-thickness; j/2 < win->width; j++){
                 for(uint16_t i = win->width * thickness; i < thresh; i += win->width){
                        if(j & 1){
                                win->win_buff[i + j/2] = (win->win_buff[i + j/2] & 0x0f) | (color << 4);
