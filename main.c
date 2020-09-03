@@ -9,6 +9,7 @@ int main(void){
 	
 	rcc_setup_hse_72mhz();
 	initscr();
+	test_colors();
 	while(1);
 }
 
