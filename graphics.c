@@ -36,47 +36,29 @@ void wrefresh(Window *win){
 void box(Window *win, uint8_t color, uint8_t thickness){
 
 	uint16_t thresh = thickness * win->width;
-	uint8_t clr = color | (color << 4);
-
+	
 	//upper border
 	
-	for(uint16_t i = 0; i < thresh; i++){
+	for(uint16_t i = 0; i < thresh; i++)
 		win->win_buff[i] = clr;
-	}
 
 	thresh = win->width * win->height;
 
 	//lower border
 	
-	for(uint16_t i = thresh - thickness * win->width; i < thresh; i++){
+	for(uint16_t i = thresh - thickness * win->width; i < thresh; i++)
 		win->win_buff[i] = clr;
-	}
 
 	thresh = (win->height - thickness) * win->width;
 
 	//left border
 	
-	for(uint16_t j = 0; j < thickness; j++){
-		for(uint16_t i = win->width * thickness; i < thresh; i += win->width){
-		       if(j & 1){
-			       win->win_buff[i + j/2] = (win->win_buff[i + j/2] & 0x0f) | (color << 4);
-		       }
-		       else{
-			       win->win_buff[i + j/2] = (win->win_buff[i + j/2] & 0xf0) | color;
-		       }
-		}
-	}
+	for(uint16_t j = 0; j < thickness; j++)
+		for(uint16_t i = win->width * thickness; i < thresh; i += win->width)
+			win->win_buff[i + j] = color;
 
 	//right border
-	for(uint16_t j = (win->width)*2-thickness; j/2 < win->width; j++){
-                for(uint16_t i = win->width * thickness; i < thresh; i += win->width){
-                       if(j & 1){
-                               win->win_buff[i + j/2] = (win->win_buff[i + j/2] & 0x0f) | (color << 4);
-                       }
-                       else{
-                               win->win_buff[i + j/2] = (win->win_buff[i + j/2] & 0xf0) | color;
-                       }
-                }
-        }
-
+	for(uint16_t j = win->width-thickness; j < win->width; j++)
+                for(uint16_t i = win->width * thickness; i < thresh; i += win->width)
+                       win->win_buff[i+j] = color;
 }		
