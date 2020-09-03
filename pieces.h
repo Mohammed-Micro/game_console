@@ -4,7 +4,7 @@
 #define NUM_OF_PIECES 	2
 #define ROTATIONS	4
 #define PROWS		6
-#define PCOLS		8
+#define PCOLS		6
 
 
 extern const char tetris[NUM_OF_PIECES][ROTATIONS][PROWS][PCOLS];
