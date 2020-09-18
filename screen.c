@@ -205,7 +205,7 @@ int8_t try_move_right(Window *win, Piece *p){
 		for(j = 0; j < PCOLS - 1; j++){
 
 			if((*(piece_arr + i))[j] > COLOR_BLACK){
-				if((*(piece_arr + i))[j + 1] == COLOR_BLACK && win->win_buff[win_row + p->x_start + j + 1] > 
+				if((*(piece_arr + i))[j + 1] == COLOR_BLACK && win->win_buff[win_row + p->x_start + j] > 
 						COLOR_BLACK){
 					return -1;
 				}
