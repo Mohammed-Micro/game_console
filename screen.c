@@ -227,6 +227,30 @@ int8_t try_move_right(Window *win, Piece *p){
 	return 0;
 }
 
+int8_t try_move_left(Window *win, Piece *p){
+
+	piece_t *piece_arr = tetris[p->piece][p->rotation];
+
+	uint16_t i, j;
+	uint16_t win_row;
+	uint16_t px_end = p->x_start + PCOLS - 1;
+
+	for(i = 0; i < PROWS; i++){
+		win_row = (p->y_start + i) * win->width;
+		for(j = 0; j < PCOLS - 1; j++){
+			if((*(piece_arr + i))[PCOLS - j - 1] > COLOR_BLACK){
+				if((*(piece_arr + i))[PCOLS - j - 2] == COLOR_BLACK && win->win_buff[win_row + px_end - j - 1] >
+						COLOR_BLACK){
+					return -1;
+				}
+			}
+		}
+	}
+
+	move_piece_left(win, p);
+	return 0;
+}
+
 void show_title(void){
 
 	uint16_t vga_col = (H_COLS - TITLE_COLS) / 2;
