@@ -45,6 +45,23 @@ void show_new_piece(Window* win, Piece* p){
 	}
 }
 
+void rem_piece(Window* win, Piece* p){
+
+	piece_t *piece_arr = tetris[p->piece][p->rotation];
+	
+	//start location relative to the Window
+	p->y_start = 2;
+	//p->x_start = (win->width - PCOLS) / 2 ;
+	
+
+	for(uint16_t i = 0; i < PROWS; i++){
+		wmove(win, p->y_start + i, p->x_start);
+		for(uint16_t j = 0; j < PCOLS; j++){
+			wwrite_pixel(win, COLOR_BLACK);
+		}
+	}
+}
+
 void move_piece_down(Window *win, Piece *p){
 
 	uint16_t py_end = p->y_start + PROWS - 1; //position of the last row in the piece to be moved
@@ -78,26 +95,29 @@ void move_piece_right(Window* win, Piece *p){
 	 * 00100 0000
 	 */
 
-	uint16_t px_end = p->x_start + PCOLS - 1;
+// 	uint16_t px_end = p->x_start + PCOLS - 1;
 
-	piece_t *piece_arr = tetris[p->piece][p->rotation];
+// 	piece_t *piece_arr = tetris[p->piece][p->rotation];
 
-	uint16_t row;
+// 	uint16_t row;
 
-	for(uint16_t i = 0; i < PROWS; i++){
+// 	for(uint16_t i = 0; i < PROWS; i++){
 		
-		row = (p->y_start + i) * win->width;
-		for(uint16_t j = 1; j <= PCOLS; j++){
+// 		row = (p->y_start + i) * win->width;
+// 		for(uint16_t j = 1; j <= PCOLS; j++){
 			
-			if( (*(piece_arr + i))[PCOLS - j] > COLOR_BLACK){
-				win->win_buff[row + px_end - j + 1] =
-					color_map[(*(piece_arr + i))[PCOLS - j]];
-				win->win_buff[row + px_end - j] = COLOR_BLACK;
-			}
-		}
-	}
+// 			if( (*(piece_arr + i))[PCOLS - j] > COLOR_BLACK){
+// 				win->win_buff[row + px_end - j + 1] =
+// 					color_map[(*(piece_arr + i))[PCOLS - j]];
+// 				win->win_buff[row + px_end - j] = COLOR_BLACK;
+// 			}
+// 		}
+// 	}
 
+// 	++p->x_start;
+	rem_piece(win,p);
 	++p->x_start;
+	show_new_piece(win,p);
 }
 
 void move_piece_left(Window* win, Piece *p){
