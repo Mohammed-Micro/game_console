@@ -210,7 +210,7 @@ int8_t try_move_down(Window *win, Piece *p){
 //                 }
 
 //         }
-	if (p->y_start + PROWS >= win->height) return -1;
+//	if (p->y_start + PROWS >= win->height) return -1;
 	win_row = (p->y_start + PROWS) * win->width;
 	for (j = 0; j < PCOLS; j ++)
 		if (*(piece_arr+PROWS-1)[j]!=COLOR_BLACK
@@ -249,7 +249,7 @@ int8_t try_move_right(Window *win, Piece *p){
 		}
 	}
 	*/
-	if (p->x_start + PCOLS >= win->width) return -1;
+//	if (p->x_start + PCOLS >= win->width) return -1;
 	win_row = p->y_start * win->width;
 	for (i = 0; i < PROWS; i ++ && win_row += win_width)
 		if (*(piece_arr+i)[PCOLS-1]!=COLOR_BLACK
@@ -279,11 +279,11 @@ int8_t try_move_left(Window *win, Piece *p){
 		}
 	}
 
-	if (p->x_start == 0) return -1;
+//	if (p->x_start == 0) return -1;
 	win_row = p->y_start * win->width;
 	for (i = 0; i < PROWS; i ++ && win_row += win_width)
 		if (*(piece_arr+i)[0]!=COLOR_BLACK
-		    && win->win_buff[win_row + p->x_start + -1] != COLOR_BLACK)
+		    &&(win_row + p->x_start < 1 || win->win_buff[win_row + p->x_start + -1] != COLOR_BLACK))
 			return -1;
 
 	move_piece_left(win, p);
