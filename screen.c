@@ -198,18 +198,24 @@ int8_t try_move_down(Window *win, Piece *p){
                 }
         }
 
-	uint16_t border;
-	wgetmaxyx(win, &border, 0);
-	win_row = (p->y_start + i + 1) * win->width;
+// 	uint16_t border;
+// 	wgetmaxyx(win, &border, 0);
+// 	win_row = (p->y_start + i + 1) * win->width;
 
-        for(j = 0; j < PCOLS; j++){
-                if((*(piece_arr + i))[j] > COLOR_BLACK){
-                        if(p->y_start + i + 1 >= border || win->win_buff[win_row + p->x_start + j] > COLOR_BLACK){
-				return -1;
-			}
-                }
+//         for(j = 0; j < PCOLS; j++){
+//                 if((*(piece_arr + i))[j] > COLOR_BLACK){
+//                         if(p->y_start + i + 1 >= border || win->win_buff[win_row + p->x_start + j] > COLOR_BLACK){
+// 				return -1;
+// 			}
+//                 }
 
-        }
+//         }
+	if (p->y_start + PROWS >= win->height) return -1;
+	win_row = (p->y_start + PROWS) * win->width;
+	for (j = 0; j < PCOLS; j ++)
+		if (*(piece_arr+PROWS-1)[j]!=COLOR_BLACK
+		    && win->win_buff[win_row + p->x_start + j] != COLOR_BLACK)
+			return -1;
         move_piece_down(win, p);
         return 0;
 }
@@ -243,8 +249,14 @@ int8_t try_move_right(Window *win, Piece *p){
 		}
 	}
 	*/
-	move_piece_right(win, p);
-	return 0;
+	if (p->x_start + PCOLS >= win->width) return -1;
+	win_row = p->y_start * win->width;
+	for (i = 0; i < PROWS; i ++ && win_row += win_width)
+		if (*(piece_arr+i)[PCOLS-1]!=COLOR_BLACK
+		    && win->win_buff[win_row + p->x_start + PCOLS] != COLOR_BLACK)
+			return -1;
+        move_piece_down(win, p);
+        return 0;
 }
 
 int8_t try_move_left(Window *win, Piece *p){
@@ -266,6 +278,13 @@ int8_t try_move_left(Window *win, Piece *p){
 			}
 		}
 	}
+
+	if (p->x_start == 0) return -1;
+	win_row = p->y_start * win->width;
+	for (i = 0; i < PROWS; i ++ && win_row += win_width)
+		if (*(piece_arr+i)[0]!=COLOR_BLACK
+		    && win->win_buff[win_row + p->x_start + -1] != COLOR_BLACK)
+			return -1;
 
 	move_piece_left(win, p);
 	return 0;
