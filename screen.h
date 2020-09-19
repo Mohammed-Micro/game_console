@@ -17,6 +17,9 @@ void rotate_piece_cwise(Window*, Piece*);
 void rotate_piece_ccwise(Window *win, Piece *p)
 int8_t try_move_down(Window*, Piece*);
 int8_t try_move_right(Window*, Piece*);
+int8_t try_move_left(Window*, Piece*);
+int8_t try_rotate_cwise(Window*, Piece*);
+int8_t try_rotate_ccwise(Window*, Piece*);
 void show_title(void);
 
 #endif
