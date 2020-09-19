@@ -1,18 +1,18 @@
 #ifndef _GRAPHICS_H
 #define _GRAPHICS_H
 
-typedef unsigned short int uint16_t;
-typedef unsigned char uint8_t;
+#include <stdint.h>
+#include "vga.h"
 
 enum Colors{
 	COLOR_BLACK = 0X00,
-	COLOR_RED = 0X1,
-	COLOR_GREEN = 0X02,
-	COLOR_BLUE = 0X08,
-	COLOR_YELLOW = 0X03,	//RED AND GREEN
-	COLOR_CYAN = 0X0A,	//GREEN AND BLUE
-	COLOR_MAGENTA = 0X09,	//RED AND BLUE
-	COLOR_WHITE = 0X0F	//RED, GREEN AND BLUE
+	COLOR_RED = 0X11,
+	COLOR_GREEN = 0X22,
+	COLOR_BLUE = 0X88,
+	COLOR_YELLOW = 0X33,	//RED AND GREEN
+	COLOR_CYAN = 0XAA,	//GREEN AND BLUE
+	COLOR_MAGENTA = 0X99,	//RED AND BLUE
+	COLOR_WHITE = 0XFF	//RED, GREEN AND BLUE
 };
 
 typedef struct __window{
@@ -27,6 +27,9 @@ typedef struct __window{
 
 Window newwin(uint16_t, uint16_t, uint16_t, uint16_t);
 void wrefresh(Window*);
+void wmove(Window*, uint16_t, uint16_t);
+void wwrite_pixel(Window*, enum Colors);
 void box(Window*, uint8_t, uint8_t);
+void wgetmaxyx(Window*, uint16_t*, uint16_t*);
 
 #endif

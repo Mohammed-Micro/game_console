@@ -10,6 +10,7 @@
 
 extern char vga_buff[V_LINES][H_COLS];
 void initscr(void);
+char in_backporch(void);
 void test_colors(void);
 
 #endif

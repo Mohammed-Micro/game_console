@@ -35,13 +35,19 @@ SECTIONS{
 
 	.bss : ALIGN(4)
 	{
+		. = ALIGN(4);
 		_sbss = ABSOLUTE(.) ;
 
 		*(.bss)
 		*(COMMON)
 
+		. = ALIGN(4);
 		_ebss = ABSOLUTE(.) ;
 
 	} >SRAM AT>SRAM
+
+	_sheap = _ebss;
+	_heap_size = 0x800;
+	_eheap = _sheap + _heap_size;
 }
 

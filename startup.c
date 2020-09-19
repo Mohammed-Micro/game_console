@@ -94,6 +94,33 @@ void __init_bss(uint32_t* bss_begin, uint32_t* bss_end){
 	}
 }
 
+void* malloc(uint32_t bytes){
+
+	extern uint32_t _sheap;
+	extern uint32_t _eheap;
+
+	static uint32_t *alloc_ptr;
+	uint32_t *ret_ptr;
+
+	if(!alloc_ptr){
+		alloc_ptr = &_sheap;
+	}
+
+	uint32_t inc = (bytes + 0x03)>>2;
+
+	if(alloc_ptr + inc > &_eheap){
+		return 0;
+	}
+
+	ret_ptr = alloc_ptr;
+	alloc_ptr += inc;
+
+	for(uint32_t i = 0; i < inc; i++){
+		*(ret_ptr + i) = 0x00;
+	}	
+
+	return ret_ptr;
+}
 
 //Reset handler definition
 void __attribute__((noreturn))

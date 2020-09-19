@@ -196,6 +196,10 @@ void initscr(void){
 
 }
 
+char in_backporch(void){
+	return *TIM3_CNT < 24;
+}
+
 void test_colors(void){
 
 	for(uint16_t i = 0; i < V_LINES; i++){

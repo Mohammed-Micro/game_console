@@ -1,16 +1,27 @@
 #include <stdint.h>
 #include "rcc.h"
-#include "vga.h"
-
+#include "gpio.h"
+#include "screen.h"
+#include "serial.h"
+#include "game.h"
 
 void rcc_setup_hse_72mhz(void);
 
 int main(void){
+
 	
 	rcc_setup_hse_72mhz();
+	*RCC_APB2ENR |= IOPCEN;
+	*GPIOC_CRH |= (1<<20);
+	*GPIOC_CRH &= ~(1<<22);
+
+	serial_begin(9600);
 	initscr();
-	test_colors();
-	while(1);
+	
+	while(1){
+		start_game();
+	}
+
 }
 
 void rcc_setup_hse_72mhz(void){
