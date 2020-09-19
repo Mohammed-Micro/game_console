@@ -261,6 +261,44 @@ int8_t try_move_left(Window *win, Piece *p){
 	return 0;
 }
 
+int8_t try_rotate_cwise(Window *win, Piece *p){
+	
+	piece_t *original_piece = tetris[p->piece][p->rotation],
+		*rotated_piece  = tetris[p->piece][(p->rotation+1)%4];
+	
+	uint16_t i, j;
+	uint16_t win_row;
+	
+	for (i=0; i < PROWS; i ++){
+		win_row = (p->y_start+1)*win->width + p->x_start;
+		for (j=0; j < PCOLS; j ++)
+			if ((*(rotated_piece+i)[j] != COLOR_BLACK && win->win_buff[win_row+j] != COLOR_BLACK
+			     && (*(original_piece+i)[j] == COLOR_BLACK)
+			     return -1;
+	}
+	rotate_piece_cwise(win,p);
+	return 0;
+}
+
+int8_t try_rotate_ccwise(Window *win, Piece *p){
+	
+	piece_t *original_piece = tetris[p->piece][p->rotation],
+		*rotated_piece  = tetris[p->piece][(p->rotation+3)%4];
+	
+	uint16_t i, j;
+	uint16_t win_row;
+	
+	for (i=0; i < PROWS; i ++){
+		win_row = (p->y_start+1)*win->width + p->x_start;
+		for (j=0; j < PCOLS; j ++)
+			if ((*(rotated_piece+i)[j] != COLOR_BLACK && win->win_buff[win_row+j] != COLOR_BLACK
+			     && (*(original_piece+i)[j] == COLOR_BLACK)
+			     return -1;
+	}
+	rotate_piece_ccwise(win,p);
+	return 0;
+}
+
 void show_title(void){
 
 	uint16_t vga_col = (H_COLS - TITLE_COLS) / 2;
