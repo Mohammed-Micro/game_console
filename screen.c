@@ -150,7 +150,7 @@ void move_piece_left(Window* win, Piece *p){
 	show_piece(win, p);
 }
 
-void rotate_piece(Window *win, Piece *p){
+void rotate_piece_cwise(Window *win, Piece *p){
 	
 	rem_piece(win, p);
 	if(p->rotation == ROTATION_ANTI_CWISE){
@@ -158,6 +158,18 @@ void rotate_piece(Window *win, Piece *p){
 	}
 	else{
 		++p->rotation;
+	}
+	show_piece(win, p);
+}
+
+void rotate_piece_ccwise(Window *win, Piece *p){
+	
+	rem_piece(win, p);
+	if(p->rotation == ROTATION_NORMAL){
+		p->rotation = ROTATION_ANTI_CWISE;
+	}
+	else{
+		--p->rotation;
 	}
 	show_piece(win, p);
 }
