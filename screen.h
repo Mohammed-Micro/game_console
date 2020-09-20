@@ -21,5 +21,6 @@ int8_t try_move_left(Window*, Piece*);
 int8_t try_rotate_cwise(Window*, Piece*);
 int8_t try_rotate_ccwise(Window*, Piece*);
 void show_title(void);
+void rem_complete_rows_cols(Window *win);
 
 #endif
