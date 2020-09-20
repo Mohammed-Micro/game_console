@@ -323,3 +323,36 @@ void show_title(void){
 	}
 }
 
+void rem_complete_rows_cols(Window *win){
+	uint16_t i,j;
+	extern const uint8_t BORDER_THICKNESS;
+	uint16_t last_row = win->height-BORDER_THICKNESS;
+	uint16_t last_col = win->width-BORDER_THICKNESS;
+	for (i=BORDER_THICKNESS; i < last_row; i ++){
+		uint8_t flag=1;
+		for (j=BORDER_THICKNESS; j < last_col; j ++)
+			if (win->win_buff[i*win->width + j]==COLOR_BLACK){
+				flag=0;
+				break;
+			}
+		if (flag)
+			for (j=BORDER_THICKNESS; j < last_col; j ++)
+				win->win_buff[i*win->width+j]=COLOR_ZOMBIE;
+	}
+
+	for (j = BORDER_THICKNESS; j < last_col; j ++){
+		uint8_t flag=1;
+		for (i=BORDER_THICKNESS; i < last_row; i ++)
+			if (win->win_buff[i*win->width + j]==COLOR_BLACK){
+				flag=0;
+				break;
+			}
+		if (flag)
+			for (i=BORDER_THICKNESS; i < last_row; i ++)
+				win->win_buff[i*win->width+j]=COLOR_ZOMBIE;
+	}
+	for (i=0; i < win->height; i ++)
+		for (j=0; j < win->width; j ++)
+			if (win->win_buff[i*win->width+j]==COLOR_ZOMBIE)
+				win->win_buff[i*win->width+j]=COLOR_BLACK;
+}
