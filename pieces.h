@@ -7,6 +7,8 @@
 #define ROTATIONS	4
 #define PROWS		12
 #define PCOLS		10
+#define UNIT_HEIGHT     3
+#define UNIT_WIDTH      2
 
 typedef const char (piece_t)[PCOLS];
 
