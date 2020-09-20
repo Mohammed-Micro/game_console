@@ -54,6 +54,7 @@ void main_loop(void){
 
 		if(delay == 1000000){
 			if(try_move_down(&main_board, &cur_piece) < 0){
+				rem_complete_rows_cols(&main_board);
 				cur_piece = next_piece;
 				next_piece = get_rand_piece();
 				show_new_piece(&main_board, &cur_piece);
