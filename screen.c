@@ -328,6 +328,7 @@ void rem_complete_rows_cols(Window *win){
 	extern const uint8_t BORDER_THICKNESS;
 	uint16_t last_row = win->height-BORDER_THICKNESS;
 	uint16_t last_col = win->width-BORDER_THICKNESS;
+	uint16_t first_cleared_row=-1, last_cleared_row=0;
 	for (i=BORDER_THICKNESS; i < last_row; i ++){
 		uint8_t flag=1;
 		for (j=BORDER_THICKNESS; j < last_col; j ++)
@@ -335,24 +336,19 @@ void rem_complete_rows_cols(Window *win){
 				flag=0;
 				break;
 			}
-		if (flag)
+		if (flag){
 			for (j=BORDER_THICKNESS; j < last_col; j ++)
-				win->win_buff[i*win->width+j]=COLOR_ZOMBIE;
-	}
-
-	for (j = BORDER_THICKNESS; j < last_col; j ++){
-		uint8_t flag=1;
-		for (i=BORDER_THICKNESS; i < last_row; i ++)
-			if (win->win_buff[i*win->width + j]==COLOR_BLACK){
-				flag=0;
-				break;
-			}
-		if (flag)
-			for (i=BORDER_THICKNESS; i < last_row; i ++)
-				win->win_buff[i*win->width+j]=COLOR_ZOMBIE;
-	}
-	for (i=0; i < win->height; i ++)
-		for (j=0; j < win->width; j ++)
-			if (win->win_buff[i*win->width+j]==COLOR_ZOMBIE)
 				win->win_buff[i*win->width+j]=COLOR_BLACK;
+			first_cleared_row=(first_cleared_row>i)?i:first_cleared_row;
+			last_cleared_row=(last_cleared_row<i)?i:last_cleared_row;
+		}
+	}
+	if (first_cleared_row > last_cleared_row) return;
+	for (i=first_cleared_row-1; i >= BORDER_THICKNESS; i ++)
+		for (j=BORDER_THICKNESS; j < last_col; j ++)
+			win->win_buff[(i+last_cleared_row-first_cleared_row+1)*win->width+j]=win->win_buff[i*win->width+j];
+
+	for (i=BORDER_THICKNESS; i < BORDER_THICKNESS+last_cleared_row-first_cleared_row+1; i ++)
+		for (j=BORDER_THICKNESS; j < last_col; j ++)
+			win->win_buff[i*win->width+j] = COLOR_BLACK;
 }
