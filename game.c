@@ -1,7 +1,5 @@
 #include "game.h"
 
-const uint8_t BORDER_THICKNESS = 1;
-
 static Piece cur_piece;
 static Piece next_piece;
 static Window main_board;
@@ -11,13 +9,14 @@ void init_game(void){
 	show_title();
 	
 	main_board = newwin(100, 30, 30, 35);
-	box(&main_board, COLOR_WHITE, BORDER_THICKNESS);
+	box(&main_board, COLOR_WHITE, 1);
 	
 	wrefresh(&main_board);
 }
 
 void new_game(void){
 
+	clear_board(&main_board);
 	cur_piece = get_rand_piece();
 	next_piece = get_rand_piece();
 
@@ -44,20 +43,26 @@ void main_loop(void){
 				wrefresh(&main_board);
 				break;
 			case 'w':
-				rotate_piece(&main_board, &cur_piece);
+				try_rotate_piece(&main_board, &cur_piece);
+				wrefresh(&main_board);
+				break;
+			case ' ':
+				while(try_move_down(&main_board, &cur_piece) == 0);
 				wrefresh(&main_board);
 				break;
 			case 'p':
-				while(serial_read_byte != 'p');
+				while(serial_read_byte() != 'p');
 				break;
 		}
 
 		if(delay == 1000000){
 			if(try_move_down(&main_board, &cur_piece) < 0){
-				rem_complete_rows_cols(&main_board);
 				cur_piece = next_piece;
 				next_piece = get_rand_piece();
-				show_new_piece(&main_board, &cur_piece);
+				if(show_new_piece(&main_board, &cur_piece) < 0){
+					while(serial_read_byte() != 'n');
+					new_game();
+				}
 			}
 			wrefresh(&main_board);
 			delay = 0;

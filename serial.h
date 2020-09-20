@@ -22,6 +22,6 @@ void serial_send_byt(char);
 void serial_send_str(const char*);
 void serial_send_word(uint32_t);
 char serial_read_blocking(void);
-char serial_read_bye(void);
+char serial_read_byte(void);
 
 #endif

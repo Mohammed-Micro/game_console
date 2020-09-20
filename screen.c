@@ -1,6 +1,7 @@
 #include "screen.h"
 
-#define TITLE_COLS 43
+#define TITLE_COLS 	43
+#define BORDER_THICKNESS 1
 
 const enum Colors color_map[PCOLORS] = {
         COLOR_BLACK,
@@ -57,11 +58,40 @@ void rem_piece(Window *win, Piece *p){
 }
 
 
-void show_new_piece(Window *win, Piece* p){
+int8_t show_new_piece(Window *win, Piece* p){
 
+	piece_t *piece_arr = tetris[p->piece][p->rotation];
 	p->y_start = 2;
 	p->x_start = (win->width - PCOLS) / 2;
+	uint16_t i, j;
+	uint16_t win_row;
+	
+	for(i = 0; i <PROWS; i++){
+		win_row = (p->y_start + i) * win->width + p->x_start;
+		for(j = 0; j < PCOLS; j++){
+			if((*(piece_arr + i))[j] != COLOR_BLACK && win->win_buff[win_row + j] != COLOR_BLACK){
+				return -1;
+			}
+		}
+	}
+
 	show_piece(win ,p);
+	return 0;
+}
+
+void clear_board(Window *win){
+
+	uint16_t i, j;
+	const uint16_t last_row = win->height - BORDER_THICKNESS;
+	const uint16_t last_col = win->width - BORDER_THICKNESS;
+	uint16_t win_row;
+
+	for(i = BORDER_THICKNESS; i < last_row; i++){
+		win_row = (i * win->width);
+		for(j = BORDER_THICKNESS; j < last_col; j++){
+			win->win_buff[win_row + j] = COLOR_BLACK;
+		}
+	}
 }
 
 void move_piece_down(Window *win, Piece *p){
@@ -150,7 +180,7 @@ void move_piece_left(Window* win, Piece *p){
 	show_piece(win, p);
 }
 
-void rotate_piece_cwise(Window *win, Piece *p){
+void rotate_piece(Window *win, Piece *p){
 	
 	rem_piece(win, p);
 	if(p->rotation == ROTATION_ANTI_CWISE){
@@ -158,18 +188,6 @@ void rotate_piece_cwise(Window *win, Piece *p){
 	}
 	else{
 		++p->rotation;
-	}
-	show_piece(win, p);
-}
-
-void rotate_piece_ccwise(Window *win, Piece *p){
-	
-	rem_piece(win, p);
-	if(p->rotation == ROTATION_NORMAL){
-		p->rotation = ROTATION_ANTI_CWISE;
-	}
-	else{
-		--p->rotation;
 	}
 	show_piece(win, p);
 }
@@ -261,41 +279,25 @@ int8_t try_move_left(Window *win, Piece *p){
 	return 0;
 }
 
-int8_t try_rotate_cwise(Window *win, Piece *p){
-	
-	piece_t *original_piece = tetris[p->piece][p->rotation],
-		*rotated_piece  = tetris[p->piece][(p->rotation+1)%4];
-	
-	uint16_t i, j;
-	uint16_t win_row;
-	
-	for (i=0; i < PROWS; i ++){
-		win_row = (p->y_start+1)*win->width + p->x_start;
-		for (j=0; j < PCOLS; j ++)
-			if ((*(rotated_piece+i)[j] != COLOR_BLACK && win->win_buff[win_row+j] != COLOR_BLACK
-			     && (*(original_piece+i)[j] == COLOR_BLACK)
-			     return -1;
-	}
-	rotate_piece_cwise(win,p);
-	return 0;
-}
+int8_t try_rotate_piece(Window *win, Piece *p){
 
-int8_t try_rotate_ccwise(Window *win, Piece *p){
-	
-	piece_t *original_piece = tetris[p->piece][p->rotation],
-		*rotated_piece  = tetris[p->piece][(p->rotation+3)%4];
-	
+	piece_t *original_piece = tetris[p->piece][p->rotation];
+	piece_t *rotated_piece = tetris[p->piece][(p->rotation + 1) % ROTATIONS];
+
 	uint16_t i, j;
 	uint16_t win_row;
 	
-	for (i=0; i < PROWS; i ++){
-		win_row = (p->y_start+1)*win->width + p->x_start;
-		for (j=0; j < PCOLS; j ++)
-			if ((*(rotated_piece+i)[j] != COLOR_BLACK && win->win_buff[win_row+j] != COLOR_BLACK
-			     && (*(original_piece+i)[j] == COLOR_BLACK)
-			     return -1;
+	for(i = 0; i < PROWS; i++){
+		win_row = (p->y_start + i) * win->width + p->x_start;
+		for(j = 0; j < PCOLS; j++){
+			if((*(rotated_piece + i))[j] != COLOR_BLACK && win->win_buff[win_row + j] != COLOR_BLACK &&
+					(*(original_piece + i))[j] == COLOR_BLACK){
+				return -1;
+			}
+		}
 	}
-	rotate_piece_ccwise(win,p);
+
+	rotate_piece(win, p);
 	return 0;
 }
 

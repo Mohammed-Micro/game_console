@@ -2,6 +2,7 @@
 #define _GRAPHICS_H
 
 #include <stdint.h>
+#include <stdlib.h>
 #include "vga.h"
 
 enum Colors{
@@ -12,8 +13,7 @@ enum Colors{
 	COLOR_YELLOW = 0X33,	//RED AND GREEN
 	COLOR_CYAN = 0XAA,	//GREEN AND BLUE
 	COLOR_MAGENTA = 0X99,	//RED AND BLUE
-	COLOR_WHITE = 0XFF,	//RED, GREEN AND BLUE
-	COLOR_ZOMBIE = 'x'	//for pixels to be removed
+	COLOR_WHITE = 0XFF	//RED, GREEN AND BLUE
 };
 
 typedef struct __window{
