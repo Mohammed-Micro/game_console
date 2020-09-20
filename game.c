@@ -1,5 +1,7 @@
 #include "game.h"
 
+const uint8_t BORDER_THICKNESS = 1;
+
 static Piece cur_piece;
 static Piece next_piece;
 static Window main_board;
@@ -9,7 +11,7 @@ void init_game(void){
 	show_title();
 	
 	main_board = newwin(100, 30, 30, 35);
-	box(&main_board, COLOR_WHITE, 1);
+	box(&main_board, COLOR_WHITE, BORDER_THICKNESS);
 	
 	wrefresh(&main_board);
 }
