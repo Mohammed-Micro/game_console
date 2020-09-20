@@ -346,7 +346,7 @@ void rem_complete_rows_cols(Window *win){
 		}
 	}
 	if (first_cleared_row > last_cleared_row) return;
-	for (i=first_cleared_row-1; i >= BORDER_THICKNESS; i ++)
+	for (i=first_cleared_row-1; i >= BORDER_THICKNESS; i --)
 		for (j=BORDER_THICKNESS; j < last_col; j ++)
 			win->win_buff[(i+last_cleared_row-first_cleared_row+1)*win->width+j]=win->win_buff[i*win->width+j];
 
